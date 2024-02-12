@@ -28,7 +28,7 @@
             <Label Content="MS SQL Server"/>
             <Button x:Name="CreateMSButton" Content="Create table" Click="CreateMSButton_Click"/>
             <Button x:Name="DropMSButton" Content="Drop table" Click="DropMSButton_Click" Margin="10 0"/>
-            <Button x:Name="AddBirthdateMSButton" Content="Add Birthdate" Click="AddBirthdateMSButton_Click" Margin="10 0" Visibility="Collapsed"/>
+            <Button x:Name="AddBirthdateMSButton" Content="Add Birthdate" Click="AddBirthdateMSButton_Click" Margin="10 0"/>
             <Label x:Name="MSCreateStatusLabel" Content="---"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
@@ -38,8 +38,8 @@
             <TextBox x:Name="UserLoginTextBox" Width="100" Margin="10 0"/>
             <Label Content="Password"/>
             <PasswordBox x:Name="UserPasswordTextBox" Width="100" Margin="10 0"/>
-            <Label Content="Birthdate" Visibility="Collapsed"/>
-            <TextBox x:Name="UserBirthdateTextBox" Width="100" Margin="10 0" Visibility="Collapsed"/>
+            <Label x:Name="BirthdateLabel" Content="Birthdate" />
+            <TextBox x:Name="UserBirthdateTextBox" Width="100" Margin="10 0"/>
             <Button x:Name="InsertMsButton" Content="Add User" Click="InsertMsButton_Click" Margin="10 0"/>
             <Label x:Name="InsertStatusLabel" Content="---"/>
         </StackPanel>

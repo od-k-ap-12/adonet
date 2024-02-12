@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using System.Diagnostics;
 
 namespace adonet
 {
@@ -108,8 +109,7 @@ namespace adonet
                 MessageBox.Show(errorMessage);
                 return;
             }
-            /*using var cmd = new SqlCommand($"INSERT INTO Users VALUES(NEWID(),N'{UserNameTextBox.Text}',N'{UserNameTextBox.Text}','{md5(UserPasswordTextBox.Password)}')",msConnection);*/
-            using var cmd = new SqlCommand($"INSERT INTO Users VALUES(NEWID(), @name, @login,'{md5(UserPasswordTextBox.Password)}')", msConnection);
+            using var cmd = new SqlCommand($"INSERT INTO Users VALUES(NEWID(), @name, @login,'{md5(UserPasswordTextBox.Password)}',@birthdate)", msConnection);
             cmd.Parameters.Add(new SqlParameter("@name", System.Data.SqlDbType.VarChar, 64)
             {
                 Value=UserNameTextBox.Text
@@ -117,6 +117,10 @@ namespace adonet
             cmd.Parameters.Add(new SqlParameter("@login", System.Data.SqlDbType.VarChar, 64)
             {
                 Value = UserLoginTextBox.Text
+            });
+            cmd.Parameters.Add(new SqlParameter("@birthdate", System.Data.SqlDbType.Date, 64)
+            {
+                Value = !string.IsNullOrEmpty(UserBirthdateTextBox.Text) ? UserBirthdateTextBox.Text : (object)DBNull.Value
             });
             try
             {
@@ -198,7 +202,12 @@ namespace adonet
                     var name= reader.GetString("Name");
                     var login=reader.GetString("Login");
                     var hash = reader.GetString("PasswordHash");
-                    SelectMsTextBlock.Text += $"{id[..5]},{name},{login},{hash[..5]}\n";
+                    var birthdate = "";
+                    if (!reader.IsDBNull("Birthdate"))
+                    {
+                        birthdate = (reader.GetDateTime("Birthdate").ToString("dd/MM/yyyy"));
+                    }
+                    SelectMsTextBlock.Text += $"{id[..5]},{name},{login},{hash[..5]},{birthdate}\n";
                 }
             }
             catch(Exception ex)
