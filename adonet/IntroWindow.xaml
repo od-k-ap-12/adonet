@@ -1,0 +1,55 @@
+﻿<Window x:Class="adonet.IntroWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:adonet"
+        mc:Ignorable="d"
+        Title="IntroWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2">
+        <Label Content="Вступ. Підключення до БД" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="MS SQL Server"/>
+            <Button x:Name="ConnectMSButton" Content="Connect" Click="ConnectMSButton_Click"/>
+            <Button x:Name="DisconnectMSButton" Content="Disconnect" Click="DisconnectMSButton_Click" Margin="10 0" IsEnabled="False"/>
+            <Label x:Name="MSConnectionStatusLabel" Content="Disconnected"/>
+        </StackPanel>
+        <Label Content="Виконання запитів" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="MS SQL Server"/>
+            <Button x:Name="CreateMSButton" Content="Create table" Click="CreateMSButton_Click"/>
+            <Button x:Name="DropMSButton" Content="Drop table" Click="DropMSButton_Click" Margin="10 0"/>
+            <Button x:Name="AddBirthdateMSButton" Content="Add Birthdate" Click="AddBirthdateMSButton_Click" Margin="10 0" Visibility="Collapsed"/>
+            <Label x:Name="MSCreateStatusLabel" Content="---"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Name"/>
+            <TextBox x:Name="UserNameTextBox" Width="100" Margin="10 0"/>
+            <Label Content="Login"/>
+            <TextBox x:Name="UserLoginTextBox" Width="100" Margin="10 0"/>
+            <Label Content="Password"/>
+            <PasswordBox x:Name="UserPasswordTextBox" Width="100" Margin="10 0"/>
+            <Label Content="Birthdate" Visibility="Collapsed"/>
+            <TextBox x:Name="UserBirthdateTextBox" Width="100" Margin="10 0" Visibility="Collapsed"/>
+            <Button x:Name="InsertMsButton" Content="Add User" Click="InsertMsButton_Click" Margin="10 0"/>
+            <Label x:Name="InsertStatusLabel" Content="---"/>
+        </StackPanel>
+    </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <Button x:Name="SelectMSButton" Content="Показати дані" Margin="20 0" Click="SelectMSButton_Click"/>
+            <TextBlock x:Name="SelectMsTextBlock"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1">
+
+        </StackPanel>
+    </Grid>
+</Window>
