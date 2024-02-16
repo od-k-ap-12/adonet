@@ -1,4 +1,5 @@
-﻿using System;
+﻿using adonet.DAL.DAO;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace adonet
                     MessageBoxImage.Error);
                 return;
             }
-            using var cmd = new SqlCommand(
+           /* using var cmd = new SqlCommand(
                 $"INSERT INTO Users VALUES( NEWID(), @name, @login, '{md5(RegPassword.Password)}' )",
                 App.MsSqlConnection);
             cmd.Parameters.Add(new SqlParameter("@name", System.Data.SqlDbType.VarChar, 64)
@@ -70,12 +71,25 @@ namespace adonet
             cmd.Parameters.Add(new SqlParameter("@login", System.Data.SqlDbType.VarChar, 64)
             {
                 Value = RegLogin.Text
-            });
+            });*/
             try
             {
-                cmd.Prepare();  // підготовка запиту - компіляція без параметрів
+                if(UserDao.AddUser(new(){
+                    Name = RegName.Text,
+                    Login = RegLogin.Text,
+                    PasswordHash=md5(RegPassword.Password),
+                    Birthdate = DateTime.Now,
+                }))
+                {
+                    MessageBox.Show("Insert OK");
+                }
+                else
+                {
+                    MessageBox.Show("Insert fails");
+                }
+/*                cmd.Prepare();  // підготовка запиту - компіляція без параметрів
                 cmd.ExecuteNonQuery();  // виконання - передача даних у скомпільований запит
-                MessageBox.Show("Insert OK");
+                MessageBox.Show("Insert OK");*/
             }
             catch (Exception ex)
             {
@@ -85,7 +99,14 @@ namespace adonet
 
         private void LogButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (UserDao.GetUserByCredentials(LogLogin.Text, md5(LogPassword.Password))==null)
+            {
+                MessageBox.Show("Login or Password isn't correct");
+            }
+            else
+            {
+                MessageBox.Show("Information is correct");
+            }
         }
     }
 }

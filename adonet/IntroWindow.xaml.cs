@@ -172,7 +172,7 @@ namespace adonet
             cmd.Connection = msConnection;
             cmd.CommandText = @"
             ALTER TABLE dbo.Users 
-            ADD Birthdate DATE;";
+            ADD Birthdate DATETIME;";
             try
             {
                 cmd.ExecuteNonQuery();
