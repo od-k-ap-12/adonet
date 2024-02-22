@@ -19,6 +19,15 @@ namespace adonet.DAL.DTO
         {
 
         }
+        public User(Guid id, string name, string login, string passwordHash, DateTime? birthdate)
+        {
+            Id = id;
+            Name = name;
+            Login = login;
+            PasswordHash = passwordHash;
+            Birthdate = birthdate;
+        }
+
         public User(DbDataReader reader)
         {
             Id = reader.GetGuid("Id");

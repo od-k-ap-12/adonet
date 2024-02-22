@@ -1,4 +1,5 @@
-﻿using System;
+﻿using adonet.DAL.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,28 @@ namespace adonet
     /// </summary>
     public partial class ChangePassword : Window
     {
-        public ChangePassword()
+        private readonly User _user;
+        public CrudActions SelectedAction { get; private set; }
+        public ChangePassword(User user)
         {
             InitializeComponent();
+            _user = user;
         }
 
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PasswordTextBox.Password == RepeatPasswordTextBox.Password)
+            {
+                SelectedAction = CrudActions.Update;
+                _user.PasswordHash = App.md5(RepeatPasswordTextBox.Password);
+                MessageBox.Show("Password changed");
+                DialogResult = true;
+            }
+        }
     }
 }

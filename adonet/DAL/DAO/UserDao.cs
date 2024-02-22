@@ -15,9 +15,80 @@ namespace adonet.DAL.DAO
 {
     internal class UserDao
     {
-        public static List<DTO.User> GetAll()
+        public static bool UpdateUser(DTO.User user)
         {
-            using SqlCommand cmd = new("SELECT * FROM Users", App.MsSqlConnection);
+            ArgumentNullException.ThrowIfNull(user);
+            if (user.Id == default) //можна покращити і перевірять наявність у БД
+            {
+                throw new ArgumentException("Id field value must not be default","user.Id");
+            }
+            using var cmd = new SqlCommand(
+            $"UPDATE Users SET Name=@name, Login=@login, PasswordHash=@passHash, Birthdate=@birthdate " + $" WHERE Id=@id ",
+            App.MsSqlConnection);
+            cmd.Parameters.Add(new SqlParameter("@id", System.Data.SqlDbType.UniqueIdentifier)
+            {
+                Value = user.Id
+            });
+            cmd.Parameters.Add(new SqlParameter("@name", System.Data.SqlDbType.VarChar, 64)
+            {
+                Value = user.Name
+            });
+            cmd.Parameters.Add(new SqlParameter("@login", System.Data.SqlDbType.VarChar, 64)
+            {
+                Value = user.Login
+            });
+            cmd.Parameters.Add(new SqlParameter("@passHash", System.Data.SqlDbType.Char, 32)
+            {
+                Value = user.PasswordHash
+            });
+            cmd.Parameters.Add(new SqlParameter("@birthdate", System.Data.SqlDbType.DateTime)
+            {
+                Value =(object?)user.Birthdate ?? DBNull.Value
+            });
+            try
+            {
+                cmd.Prepare();  // підготовка запиту - компіляція без параметрів
+                cmd.ExecuteNonQuery();  // виконання - передача даних у скомпільований запит
+                return true;
+            }
+            catch (Exception ex)
+            {
+                App.LogError(ex.Message);
+                return false;
+            }
+/*            return true;*/
+        }
+
+        public static bool DeleteUser(DTO.User user, bool hardMode=false)
+        {
+            ArgumentNullException.ThrowIfNull(user);
+            if (user.Id == default) //можна покращити і перевірять наявність у БД
+            {
+                throw new ArgumentException("Id field value must not be default", "user.Id");
+            }
+            using var cmd = new SqlCommand(null, App.MsSqlConnection);
+            if (hardMode)
+            {
+                cmd.CommandText = $"DELETE FROM Users WHERE Id='{user.Id}' ";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE Users SET DeleteDt=CURRENT_TIMESTAMP, Name='', Birthdate=NULL WHERE Id='{user.Id}' ";
+            }
+            try
+            {
+                cmd.ExecuteNonQuery();  // виконання - передача даних у скомпільований запит
+                return true;
+            }
+            catch (Exception ex)
+            {
+                App.LogError(ex.Message);
+                return false;
+            }
+        }
+        public static List<DTO.User> GetAll(bool showDeleted=false)
+        {
+            using SqlCommand cmd = new("SELECT * FROM Users " + (showDeleted? "" : " WHERE DeleteDt IS NULL"), App.MsSqlConnection);
             try
             {
                 using SqlDataReader reader = cmd.ExecuteReader();
@@ -30,6 +101,7 @@ namespace adonet.DAL.DAO
             }
             catch (Exception ex)
             {
+                App.LogError(ex.Message);
                 return null!;
             }
         }
@@ -64,6 +136,7 @@ namespace adonet.DAL.DAO
             }
             catch (Exception ex)
             {
+                App.LogError(ex.Message);
                 return false;
             }
         }
@@ -100,6 +173,7 @@ namespace adonet.DAL.DAO
             }
             catch (Exception ex)
             {
+                App.LogError(ex.Message);
                 return null;
             }
         }

@@ -21,10 +21,12 @@ namespace adonet
     public partial class UserWindow : Window
     {
         private readonly User _user;
+        public CrudActions SelectedAction { get; private set; }
         public UserWindow(User user)
         {
             InitializeComponent();
             _user = user;
+            SelectedAction = CrudActions.None;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -38,22 +40,25 @@ namespace adonet
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = null;
+            this.Close();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            SelectedAction = CrudActions.Update;
             this.DialogResult = true;
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            SelectedAction = CrudActions.Delete;
             this.DialogResult = false;
         }
 
         private void ChangePasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            new ChangePassword().ShowDialog();
+            new ChangePassword(_user).ShowDialog();
+            DkTextBox.Text = _user.PasswordHash;
         }
     }
 }

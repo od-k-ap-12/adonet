@@ -44,10 +44,51 @@ namespace adonet
             {
                 if(item.Content is User user)
                 {
-                    bool? result = new UserWindow(user).ShowDialog();
-                    MessageBox.Show(result?.ToString()??"null");
+                    UserWindow dialog = new(user);
+                    dialog.ShowDialog();
+                    MessageBox.Show(dialog.SelectedAction.ToString());
+                    User UpdatedUser = new User(Guid.Parse(dialog.IdTextBox.Text),dialog.NameTextBox.Text,dialog.LoginTextBox.Text,dialog.DkTextBox.Text,dialog.BirthdateDatePicker.SelectedDate);
+                    switch(dialog.SelectedAction)
+                    {
+                        case CrudActions.Update: UpdateUser(UpdatedUser); break;
+                        case CrudActions.Delete: DeleteUser(user); break;
+                    }
                 }
 
+            }
+        }
+        private void UpdateUser(User user)
+        {
+            if(UserDao.UpdateUser(user))
+            {
+                MessageBox.Show("Successfully updated");
+                foreach (var u in Users)
+                {
+                    if (u.Id == user.Id)
+                    {
+                        Users.Remove(u);
+                        break;
+                    }
+                }
+                Users.Add(user);
+            }
+            else
+            {
+                MessageBox.Show("Update failed");
+            }
+        }
+        private void DeleteUser(User user)
+        {
+            {
+                if (UserDao.DeleteUser(user))
+                {
+                    MessageBox.Show("Successfully deleted");
+                    Users.Remove(user);
+                }
+                else
+                {
+                    MessageBox.Show("Delete failed");
+                }
             }
         }
     }
