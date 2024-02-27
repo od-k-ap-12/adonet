@@ -16,5 +16,6 @@ namespace adonet.EFContext
         public Guid? IdSecDep { get; set; }
         public Guid? IdChief { get; set; }
         public DateTime? DeleteDt { get; set; }
+        public int? Age { get; set; }
     }
 }

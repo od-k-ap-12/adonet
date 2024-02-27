@@ -8,6 +8,10 @@
         Loaded="Window_Loaded"
         Title="EFWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <Label Content="Managers: "/>
             <Label x:Name="ManagersCountLabel" Content="---"/>
@@ -17,6 +21,14 @@
             <Label x:Name="DepartmentsCountLabel" Content="---"/>
             <Label Content="Sales: "/>
             <Label x:Name="SalesCountLabel" Content="---"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="SELECT" x:Name="SelectButton" Click="SelectButton_Click"/>
+            <Button Content="Cheap" x:Name="CheapButton" Click="CheapButton_Click"/>
+            <Button Content="+Sales" x:Name="SalesButton" Click="SalesButton_Click"/>
+            <Button Content="Products" x:Name="ProductSalesButton" Click="ProductSalesButton_Click"/>
+            <Button Content="LINQ hw" x:Name="LinqButton" Click="LinqButton_Click"/>
+            <Label x:Name="ResultLabel"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -18,6 +18,7 @@ namespace adonet
     public partial class App : Application
     {
         public static EFContext.EfContext EfDataContext { get;} = new();
+        public static Random Random { get; set; } = new();
         public static void LogError(string message, [CallerMemberName] string callerName="undefined")
         {
             System.IO.File.AppendAllText("logs.txt", $"{DateTime.Now}[{callerName}]{message}");
