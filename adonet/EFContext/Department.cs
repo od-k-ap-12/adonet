@@ -11,5 +11,9 @@ namespace adonet.EFContext
         public Guid Id { get; set; }
         public String Name { get; set; } = null!;
         public DateTime? DeleteDt { get; set; }
+        public String? InternationalName { get; set; }
+
+        public List<Manager> MainWorkers { get; set; }
+        public IEnumerable<Manager> SecondaryWorkers { get; set;}
     }
 }

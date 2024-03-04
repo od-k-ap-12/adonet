@@ -51,6 +51,13 @@ namespace adonet
             new EFWindow().ShowDialog();
             this.Show();
         }
+
+        private void EfCrudButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            new EfCrudWindow().ShowDialog();
+            this.Show();
+        }
     }
 }
 /*

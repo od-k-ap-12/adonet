@@ -14,5 +14,8 @@ namespace adonet.EFContext
         public Guid ManagerId { get; set; }
         public DateTime SaleDt { get; set; }
         public DateTime? DeleteDt { get; set; }
+        ///////navigation properties
+        public Manager Manager { get; set; }
+        public Product Product { get; set; }
     }
 }

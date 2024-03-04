@@ -1,0 +1,35 @@
+﻿<Window x:Class="adonet.EFCrudViews.EfDepartmentCrudWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:adonet.EFCrudViews"
+        mc:Ignorable="d"
+        Title="EfDepartmentCrudWindow" Height="250" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Edit Department" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="20"/>
+        
+        <Label Content="Id" Grid.Row="1"/>
+        <TextBox IsReadOnly="True" Text="{Binding model.Id, Mode=OneWay}" Grid.Column="1" Grid.Row="1"/>
+        <Label Content="Name" Grid.Row="2"/>
+        <TextBox Text="{Binding model.Name, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
+        <Label Content="InternationalName" Grid.Row="3"/>
+        <TextBox Text="{Binding model.InternationalName, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"/>
+        <UniformGrid Grid.Row="4" Grid.ColumnSpan="2" Rows="1">
+            <Button x:Name="CancelButton" Content="Cancel" Margin="10 5" Click="CancelButton_Click"/>
+            <Button x:Name="SaveButton" Content="Save" Margin="10 5" Click="SaveButton_Click"/>
+            <Button x:Name="DeleteButton" Content="Delete" Margin="10 5" Click="DeleteButton_Click"/>
+        </UniformGrid>
+    </Grid>
+</Window>

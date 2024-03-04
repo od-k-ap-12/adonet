@@ -81,10 +81,10 @@ namespace adonet
         }
         private async Task AddSales()
         {
-            DateTime start = new DateTime(2023, 1, 1);
+            DateTime start = new DateTime(2023, 3, 3);
 
             DateTime randomDate = start
-                .AddDays(App.Random.Next(365))
+                .AddDays(1)
                 .AddHours(App.Random.Next(9, 20))
                 .AddMinutes(App.Random.Next(0, 59))
                 .AddSeconds(App.Random.Next(0, 59));
@@ -105,7 +105,7 @@ namespace adonet
 
         private void ProductSalesButton_Click(object sender, RoutedEventArgs e)
         {
-            DateTime date = new(2023, 02, 23);
+            DateTime date = new(2023, 04, 21);
             var query = App.EfDataContext.Products
                 .GroupJoin(
                     App.EfDataContext.Sales,
@@ -114,7 +114,7 @@ namespace adonet
                     (product, sales) => new
                     {
                         Name = product.Name,
-                        Pcs = sales.Sum(s => s.Quantity)
+                        Pcs = sales.Where(s=>s.SaleDt.Date == date.Date).Sum(s => s.Quantity)
                     }
                 );
             foreach( var item in query )
@@ -171,6 +171,163 @@ namespace adonet
                 .AddSeconds(App.Random.Next(0, 59));
             ResultLabel.Content += "random date: " + randomDate + " \n";
         }
+
+        private void Linq2Button_Click(object sender, RoutedEventArgs e)
+        {
+            /* Д.З. Скласти EF(LINQ) запити на одержання наступних даних:
+            * - статистику продажів по менеджерах за "сьогодні" - за день, як сьогодні, тільки за звітний рік БД (2023)
+            * 
+            * Також модифікувати алгоритм визначення дати, щоб вона
+            * відповідала поточній даті, додати відомості про дату до виводу статистики
+            */
+
+
+            ResultLabel.Content = "";
+            DateTime date = new DateTime(2023, DateTime.Now.Month, DateTime.Now.Day); 
+            var query = App.EfDataContext.Managers
+                .GroupJoin(
+                    App.EfDataContext.Sales,
+                    p => p.Id,
+                    s => s.ManagerId,
+                    (manager, sales) => new
+                    {
+                        Name = manager.Surname,
+                        Pcs = sales.Where(s => s.SaleDt.Date == date.Date).Sum(s => s.Quantity)
+                    }
+                );
+            ResultLabel.Content += date.Day.ToString()+"."+date.Month.ToString()+"."+date.Year.ToString() + "\n";
+            foreach (var item in query)
+            {
+                ResultLabel.Content += $"{item.Name} {item.Pcs}\n";
+            }
+        }
+
+        private void NavButton1_Click(object sender, RoutedEventArgs e)
+        {
+            ResultLabel.Content = "";
+            foreach(var man in
+            App.EfDataContext.Managers.
+                Include(m => m.MainDepartment)
+                .Take(5)){
+                ResultLabel.Content += $"{man.Surname} {man.MainDepartment.Name}\n";
+            }
+            ResultLabel.Content += "\n";
+            foreach(var str in
+            App.EfDataContext
+                .Departments
+                .Include(d=>d.MainWorkers)
+                .Select(d => $"{d.Name} {d.MainWorkers.Count}"))
+            {
+                ResultLabel.Content += $"{str}\n";
+            }
+
+        }
+
+        private void NavButton2_Click(object sender, RoutedEventArgs e)
+        {
+            ResultLabel.Content = "";
+            foreach(var str in
+            App.EfDataContext
+                .Managers
+                .Include(m=> m.SecondaryDepartment)
+                .Select(m=>$"{m.Surname} {(m.SecondaryDepartment==null?"--":m.SecondaryDepartment.Name)}")
+                /*.Take(15)*/)
+            {
+                ResultLabel.Content += $"{str}\n";
+            }
+        }
+        private void NavHwButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResultLabel.Content = "";
+            /* Д.З. "Навігаційні властивості"
+             * Запит на "відділ за сумісництвом" - додати нумерацію рядків результату
+             *  (бажано у складі запиту)
+             * Додати виведення інверсної навігаційної властивості - кількості
+             *  працівників за сумісництвом, що працюють у відділах
+             *  
+             * * Скласти SQL запити, аналогічні EF-запитам
+             */
+            var query = App.EfDataContext
+                 .Managers
+                 .Include(m => m.SecondaryDepartment)
+                 .Select(m => $"{m.Surname} {(m.SecondaryDepartment == null ? "--" : m.SecondaryDepartment.Name)}")
+                 .ToList();
+            foreach (var item in query.Select((item, i) => $"{i + 1}. {item}"))
+            {
+                ResultLabel.Content += $"{item}\n";
+            }
+
+            ResultLabel.Content += $"--------------------------------------\n";
+
+            var query2 = App.EfDataContext
+                .Departments
+                .Include(d => d.SecondaryWorkers)
+                .Select(d => $"{d.Name} {d.SecondaryWorkers.Count()}")
+                .ToList();
+            foreach (var item in query2.Select((item, i) => $"{i + 1}. {item}"))
+            {
+                ResultLabel.Content += $"{item}\n";
+            }
+        }
+
+        private void ChiefButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResultLabel.Content = "";
+            foreach (Manager man in
+            App.EfDataContext
+                .Managers
+                .Include(m => m.Chief))
+            {
+                ResultLabel.Content += $"{man.Surname}--{man.Chief?.Surname ?? "no chief"}\n";
+            }
+
+        }
+
+        private void SubordinatesButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResultLabel.Content = "";
+            foreach (Manager man in
+            App.EfDataContext
+                .Managers
+                .Include(m => m.Subordinates))
+            {
+                ResultLabel.Content += $"{man.Surname}--{String.Join(",",man.Subordinates.Select(m=>m.Surname))}\n";
+            }
+
+        }
+
+        private void SalesProdButton_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime date = new(2023, 04, 21);
+            ResultLabel.Content = "";
+            foreach (Product p in
+            App.EfDataContext
+                .Products
+                .Include(p => p.Sales))
+            {
+                ResultLabel.Content += $"{p.Name}--{p.Sales.Where(s=>s.SaleDt.Date==date.Date).Count()}\n";
+            }
+        }
+
+        private void Linq3Button_Click(object sender, RoutedEventArgs e)
+        {
+             /* Д.З. Скласти EF(LINQ) запити на одержання наступних даних:
+             * - статистику продажів по товарах за "сьогодні" 
+             *    Назва товару -- кількість чеків, шт -- кількість товарів, шт. -- обіг, грн.
+             *    
+             * Тренуватись у налаштуванні зв'язків через контекст даних
+             */
+            DateTime date = new DateTime(2023, DateTime.Now.Month, DateTime.Now.Day);
+            ResultLabel.Content = "";
+            foreach (Product p in
+            App.EfDataContext
+                .Products
+                .Include(p => p.Sales))
+            {
+                ResultLabel.Content += $"{p.Name}--к-сть чеків: {p.Sales.Where(s => s.SaleDt.Date == date.Date).Count()}--к-сть товарів: {p.Sales.Where(s => s.SaleDt.Date == date.Date).Sum(s => s.Quantity)}--обіг,грн: {p.Price*p.Sales.Where(s => s.SaleDt.Date == date.Date).Sum(s => s.Quantity)}\n\n";
+            }
+        }
+
     }
 }
 

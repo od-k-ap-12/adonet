@@ -17,5 +17,10 @@ namespace adonet.EFContext
         public Guid? IdChief { get; set; }
         public DateTime? DeleteDt { get; set; }
         public int? Age { get; set; }
+        public Department? MainDepartment { get; set; }
+        public Department? SecondaryDepartment { get; set; }
+        public Manager? Chief {  get; set; }
+        public IEnumerable<Manager>? Subordinates { get; set; }
+        public IEnumerable<Sale> Sales { get; set; }
     }
 }

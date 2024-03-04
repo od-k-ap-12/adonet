@@ -9,9 +9,13 @@
         Title="EFWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="22*"/>
+            <RowDefinition Height="195*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal">
             <Label Content="Managers: "/>
             <Label x:Name="ManagersCountLabel" Content="---"/>
@@ -22,13 +26,23 @@
             <Label Content="Sales: "/>
             <Label x:Name="SalesCountLabel" Content="---"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="SELECT" x:Name="SelectButton" Click="SelectButton_Click"/>
-            <Button Content="Cheap" x:Name="CheapButton" Click="CheapButton_Click"/>
-            <Button Content="+Sales" x:Name="SalesButton" Click="SalesButton_Click"/>
-            <Button Content="Products" x:Name="ProductSalesButton" Click="ProductSalesButton_Click"/>
-            <Button Content="LINQ hw" x:Name="LinqButton" Click="LinqButton_Click"/>
-            <Label x:Name="ResultLabel"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="100,21,100,0">
+            <Button Content="SELECT" x:Name="SelectButton" Click="SelectButton_Click" FontSize="15"/>
+            <Button Content="Cheap" x:Name="CheapButton" Click="CheapButton_Click" FontSize="15"/>
+            <Button Content="+Sales" x:Name="SalesButton" Click="SalesButton_Click" FontSize="15"/>
+            <Button Content="Products" x:Name="ProductSalesButton" Click="ProductSalesButton_Click" FontSize="15"/>
+            <Button Content="LINQ hw" x:Name="LinqButton" Click="LinqButton_Click" FontSize="15"/>
+            <Button Content="LINQ hw2" x:Name="Linq2Button" Click="Linq2Button_Click" FontSize="15"/>
+            <Button Content="LINQ hw3" x:Name="Linq3Button" Click="Linq3Button_Click" FontSize="15"/>
+            <Button Content="Nav 1" x:Name="NavButton1" Click="NavButton1_Click" FontSize="15"/>
+            <Button Content="Nav 2" x:Name="NavButton2" Click="NavButton2_Click" FontSize="15"/>
+            <Button Content="Nav hw" x:Name="NavHwButton" Click="NavHwButton_Click" FontSize="15"/>
+            <Button Content="Chief" x:Name="ChiefButton" Click="ChiefButton_Click" FontSize="15"/>
+            <Button Content="Subordinates" x:Name="SubordinatesButton" Click="SubordinatesButton_Click" FontSize="15"/>
+            <Button Content="Prods" x:Name="SalesProdButton" Click="SalesProdButton_Click" FontSize="15"/>
         </StackPanel>
+        <ScrollViewer Grid.Column="1" Grid.RowSpan="2" Margin="50,0,50,0">
+            <Label x:Name="ResultLabel"/>
+        </ScrollViewer>
     </Grid>
 </Window>

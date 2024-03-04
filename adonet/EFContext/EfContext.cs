@@ -21,6 +21,30 @@ namespace adonet.EFContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Manager>()
+                .HasOne(m => m.MainDepartment)
+                .WithMany(d => d.MainWorkers)
+                .HasForeignKey(m=>m.IdMainDep)
+                .HasPrincipalKey(d => d.Id);
+
+            modelBuilder.Entity<Manager>()
+                .HasOne(m => m.SecondaryDepartment)
+                .WithMany(d => d.SecondaryWorkers)
+                .HasForeignKey(m => m.IdSecDep);
+            modelBuilder.Entity<Manager>()
+                .HasOne(m => m.Chief)
+                .WithMany(c => c.Subordinates)
+                .HasForeignKey(m => m.IdChief)
+                .HasPrincipalKey(c=>c.Id);
+
+            modelBuilder.Entity<Sale>()
+                .HasOne(s => s.Manager)
+                .WithMany(m => m.Sales);
+
+            modelBuilder.Entity<Sale>()
+                .HasOne(s => s.Product)
+                .WithMany(p => p.Sales);
+
             SeedDepartments(modelBuilder);
             SeedProducts(modelBuilder);
             SeedManagers(modelBuilder);

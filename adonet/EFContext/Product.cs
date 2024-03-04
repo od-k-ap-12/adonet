@@ -12,5 +12,6 @@ namespace adonet.EFContext
         public String Name { get; set; } = null!;
         public double Price { get; set; }
         public DateTime? DeleteDt { get; set; }
+        public IEnumerable<Sale> Sales { get; set; }
     }
 }
