@@ -1,0 +1,55 @@
+﻿<Window x:Class="adonet.EFCrudViews.EfManagerCrudWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:adonet.EFCrudViews"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="EfManagerCrudWindow" Height="340" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Edit Manager" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="20"/>
+
+        <Label Content="Surname" Grid.Row="1"/>
+        <TextBox Text="{Binding model.Surname, Mode=OneWay}" Grid.Column="1" Grid.Row="1"/>
+        <Label Content="Name" Grid.Row="2"/>
+        <TextBox Text="{Binding model.Name, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
+        <Label Content="Secname" Grid.Row="3"/>
+        <TextBox Text="{Binding model.Secname, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"/>
+        <Label Content="Departments" Grid.Row="4"/>
+        <ComboBox x:Name="MainDepComboBox" ItemsSource="{Binding model.Departments, Mode=TwoWay}" Grid.Column="1" Grid.Row="4" SelectionChanged="MainDepComboBox_SelectionChanged"/>
+
+        <Label Content="SecDepartments" Grid.Row="5"/>
+        <DockPanel Grid.Column="1" Grid.Row="5">
+            <Button x:Name="ClearSecDep" DockPanel.Dock="Right" Content="X" Padding="10 0" Click="ClearSecDep_Click"/>
+            <ComboBox x:Name="SecDepComboBox" ItemsSource="{Binding model.Departments, Mode=TwoWay}" SelectionChanged="SecDepComboBox_SelectionChanged"/>
+        </DockPanel>
+
+        <Label Content="Chief" Grid.Row="6"/>
+        <DockPanel Grid.Column="1" Grid.Row="6">
+            <Button x:Name="ClearChief" DockPanel.Dock="Right" Content="X" Padding="10 0" Click="ClearChief_Click"/>
+            <ComboBox x:Name="ChiefComboBox" ItemsSource="{Binding model.Chiefs}" SelectionChanged="ChiefComboBox_SelectionChanged"/>
+        </DockPanel>
+
+        <UniformGrid Grid.Row="8" Grid.ColumnSpan="2" Rows="1">
+            <Button x:Name="CancelButton" Content="Cancel" Margin="10 5" Click="CancelButton_Click"/>
+            <Button x:Name="SaveButton" Content="Save" Margin="10 5" Click="SaveButton_Click"/>
+            <Button x:Name="DeleteButton" Content="Delete" Margin="10 5" Click="DeleteButton_Click"/>
+        </UniformGrid>
+    </Grid>
+</Window>

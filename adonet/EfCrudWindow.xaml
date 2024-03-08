@@ -19,6 +19,7 @@
         <StackPanel Orientation="Vertical">
             <DockPanel>
                 <Button x:Name="AddDepartmentButton" DockPanel.Dock="Right" Content="+" Width="30" Click="AddDepartmentButton_Click"/>
+                <Button x:Name="AllDepartmentButton" DockPanel.Dock="Left" Content="All" Width="30" Click="AllDepartmentButton_Click"/>
                 <Label Content="Departments" HorizontalAlignment="Center"/>
             </DockPanel>
             <ListView x:Name="DepartmentsListView">
@@ -62,6 +63,33 @@
                 <ListView.Resources>
                     <Style TargetType="ListViewItem">
                         <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+                    </Style>
+                </ListView.Resources>
+            </ListView>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1">
+            <DockPanel>
+                <Button x:Name="AddManagerButton" DockPanel.Dock="Right" Content="+" Width="30" Click="AddManagerButton_Click"/>
+                <Label Content="Managers" HorizontalAlignment="Center"/>
+            </DockPanel>
+            <ListView x:Name="ManagersListView" MaxHeight="200" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name"
+                    DisplayMemberBinding="{Binding Path=Name}"/>
+                        <GridViewColumn Header="Surname"
+                    DisplayMemberBinding="{Binding Path=Surname}"/>
+                        <GridViewColumn Header="Secname"
+                    DisplayMemberBinding="{Binding Path=Secname}"/>
+                        <GridViewColumn Header="Id"
+                    DisplayMemberBinding="{Binding Path=Id}"/>
+                        <GridViewColumn Header="DeleteDt"
+                    DisplayMemberBinding="{Binding Path=DeleteDt}"/>
+                    </GridView>
+                </ListView.View>
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick_1"/>
                     </Style>
                 </ListView.Resources>
             </ListView>

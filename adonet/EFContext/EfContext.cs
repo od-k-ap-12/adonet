@@ -13,6 +13,7 @@ namespace adonet.EFContext
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Sale> Sales { get; set; }
+        public IEnumerable<Manager> Chiefs => Managers.OrderBy(m => m.Surname).AsEnumerable();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
