@@ -26,7 +26,7 @@
         <Label Content="Edit Manager" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="20"/>
 
         <Label Content="Surname" Grid.Row="1"/>
-        <TextBox Text="{Binding model.Surname, Mode=OneWay}" Grid.Column="1" Grid.Row="1"/>
+        <TextBox Text="{Binding model.Surname, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"/>
         <Label Content="Name" Grid.Row="2"/>
         <TextBox Text="{Binding model.Name, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
         <Label Content="Secname" Grid.Row="3"/>

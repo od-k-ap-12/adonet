@@ -27,6 +27,8 @@ namespace adonet
     public partial class EfCrudWindow : Window
     {
         private ICollectionView departmentsView;
+        private readonly Predicate<Object> departmentsFilter = obj => (obj as Department)?.DeleteDt == null;
+        private Task? dbTask;
         public EfCrudWindow()
         {
             InitializeComponent();
@@ -140,7 +142,26 @@ namespace adonet
 
         private void AddManagerButton_Click(object sender, RoutedEventArgs e)
         {
-
+ /*           Manager entity = new() { Id = Guid.NewGuid() };
+            ManagerModel model = new(entity)
+            {
+                Departments = App.EfDataContext.
+                    Departments
+                    .OrderBy(d => d.Name)
+                    .Select(d => new IdName { Id = d.Id, Name = d.Name })
+                    .ToList(),
+                *//*                    MainDep= new IdName { Id = manager.MainDepartment.Id, Name = manager.MainDepartment.Name }*//*
+                Chiefs = App.EfDataContext
+                    .Chiefs
+                    .Select(m => new IdName
+                    {
+                        Id = m.Id,
+                        Name = $"{m.Surname} {m.Name[0]}. {m.Secname[0]}."
+                    })
+                    .ToList(),
+            };
+            EfManagerCrudWindow dialog = new(model);
+            dialog.ShowDialog();*/
         }
 
         private void ListViewItem_MouseDoubleClick_1(object sender, MouseButtonEventArgs e)
@@ -175,9 +196,27 @@ namespace adonet
                     manager.IdMainDep = dialog.model.MainDep.Id;
                     manager.IdSecDep = dialog.model.SecDep?.Id;
                     manager.IdChief=dialog.model.Chief?.Id;
-                    App.EfDataContext.SaveChangesAsync();
+                    dbTask = App.EfDataContext
+                        .SaveChangesAsync()
+                        .ContinueWith(_ => Dispatcher.Invoke(LoadManagerData));
+                }
+                else if(dialog.Action == CrudActions.Delete)
+                {
+                    manager.DeleteDt = DateTime.Now;
+                }
+                if (dialog.Action != CrudActions.None)
+                {
+                    dbTask = App.EfDataContext
+                        .SaveChangesAsync()
+                        .ContinueWith(_ => Dispatcher.Invoke(LoadManagerData));
+
                 }
             }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            dbTask?.Wait();
         }
     }
 }

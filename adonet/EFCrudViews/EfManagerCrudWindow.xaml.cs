@@ -87,5 +87,10 @@ namespace adonet.EFCrudViews
         {
             model.MainDep = (IdName)MainDepComboBox.SelectedItem;
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
     }
 }
