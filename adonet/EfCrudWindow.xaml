@@ -95,5 +95,31 @@
                 </ListView.Resources>
             </ListView>
         </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+            <DockPanel>
+                <Button x:Name="AddSaleButton" DockPanel.Dock="Right" Content="+" Width="30" Click="AddSaleButton_Click"/>
+                <Button x:Name="AllSaleButton" DockPanel.Dock="Left" Content="All" Width="30" Click="AllSaleButton_Click"/>
+                <Label Content="Sales" HorizontalAlignment="Center"/>
+            </DockPanel>
+            <ListView x:Name="SalesListView">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id"
+                                    DisplayMemberBinding="{Binding Path=Id}"/>
+                        <GridViewColumn Header="Quantity"
+                                    DisplayMemberBinding="{Binding Path=Quantity}"/>
+                        <GridViewColumn Header="SaleDt"
+                                    DisplayMemberBinding="{Binding Path=SaleDt}"/>
+                        <GridViewColumn Header="DeleteDt"
+                                    DisplayMemberBinding="{Binding Path=DeleteDt}"/>
+                    </GridView>
+                </ListView.View>
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick_2"/>
+                    </Style>
+                </ListView.Resources>
+            </ListView>
+        </StackPanel>
     </Grid>
 </Window>

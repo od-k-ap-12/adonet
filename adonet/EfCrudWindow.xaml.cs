@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace adonet
 {
@@ -27,7 +28,7 @@ namespace adonet
     public partial class EfCrudWindow : Window
     {
         private ICollectionView departmentsView;
-        private readonly Predicate<Object> departmentsFilter = obj => (obj as Department)?.DeleteDt == null;
+        private readonly Predicate<System.Object> departmentsFilter = obj => (obj as Department)?.DeleteDt == null;
         private Task? dbTask;
         public EfCrudWindow()
         {
@@ -38,6 +39,20 @@ namespace adonet
         {
             LoadData();
             LoadManagerData();
+            LoadSalesData();
+        }
+        private void LoadSalesData()
+        {
+            DateTime date = new(2023, DateTime.Now.Month, DateTime.Now.Day);
+            SalesListView.ItemsSource = null;
+            App.EfDataContext.Sales.Load();
+            SalesListView.ItemsSource =
+                App.EfDataContext
+                .Sales
+                .Local
+                .ToObservableCollection()
+                .Where(s => s.SaleDt.Date == date.Date)
+                .Take(10);
         }
         private void LoadManagerData()
         {
@@ -142,7 +157,7 @@ namespace adonet
 
         private void AddManagerButton_Click(object sender, RoutedEventArgs e)
         {
- /*           Manager entity = new() { Id = Guid.NewGuid() };
+            Manager entity = new() { Id = Guid.NewGuid() };
             ManagerModel model = new(entity)
             {
                 Departments = App.EfDataContext.
@@ -150,7 +165,7 @@ namespace adonet
                     .OrderBy(d => d.Name)
                     .Select(d => new IdName { Id = d.Id, Name = d.Name })
                     .ToList(),
-                *//*                    MainDep= new IdName { Id = manager.MainDepartment.Id, Name = manager.MainDepartment.Name }*//*
+/*                                    MainDep= new IdName { Id = manager.MainDepartment.Id, Name = manager.MainDepartment.Name }*/
                 Chiefs = App.EfDataContext
                     .Chiefs
                     .Select(m => new IdName
@@ -161,7 +176,7 @@ namespace adonet
                     .ToList(),
             };
             EfManagerCrudWindow dialog = new(model);
-            dialog.ShowDialog();*/
+            dialog.ShowDialog();
         }
 
         private void ListViewItem_MouseDoubleClick_1(object sender, MouseButtonEventArgs e)
@@ -217,6 +232,83 @@ namespace adonet
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             dbTask?.Wait();
+        }
+
+        private void ListViewItem_MouseDoubleClick_2(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is System.Windows.Controls.ListViewItem item && item.Content is Sale sale)
+            {
+                EfSaleCrudWindow dialog = new(new SaleModel(sale)
+                {
+                    Products = App.EfDataContext.
+                    Products
+                    .OrderBy(d => d.Name)
+                    .Select(d => new IdName { Id = d.Id, Name = d.Name })
+                    .ToList(),
+
+                    Managers = App.EfDataContext
+                    .Managers
+                    .Select(m => new IdName
+                    {
+                        Id = m.Id,
+                        Name = $"{m.Surname} {m.Name[0]}. {m.Secname[0]}."
+                    })
+                    .ToList(),
+
+                });
+
+                dialog.ShowDialog();
+
+                if (dialog.Action == CrudActions.Update)
+                {
+                    sale.Quantity = dialog.model.Quantity;
+                    sale.ProductId = dialog.model.Product.Id;
+                    sale.ManagerId = dialog.model.Manager.Id;
+                    dbTask = App.EfDataContext
+                        .SaveChangesAsync()
+                        .ContinueWith(_ => Dispatcher.Invoke(LoadManagerData));
+                }
+                else if (dialog.Action == CrudActions.Delete)
+                {
+                    sale.DeleteDt = DateTime.Now;
+                }
+                if (dialog.Action != CrudActions.None)
+                {
+                    dbTask = App.EfDataContext
+                        .SaveChangesAsync()
+                        .ContinueWith(_ => Dispatcher.Invoke(LoadManagerData));
+
+                }
+            }
+        }
+
+        private void AddSaleButton_Click(object sender, RoutedEventArgs e)
+        {
+            Sale entity = new() { Id = Guid.NewGuid() };
+            SaleModel model = new(entity)
+            {
+                Products = App.EfDataContext.
+                    Products
+                    .OrderBy(d => d.Name)
+                    .Select(d => new IdName { Id = d.Id, Name = d.Name })
+                    .ToList(),
+
+                Managers = App.EfDataContext
+                    .Managers
+                    .Select(m => new IdName
+                    {
+                        Id = m.Id,
+                        Name = $"{m.Surname} {m.Name[0]}. {m.Secname[0]}."
+                    })
+                    .ToList(),
+            };
+            EfSaleCrudWindow dialog = new(model);
+            dialog.ShowDialog();
+        }
+
+        private void AllSaleButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

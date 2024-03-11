@@ -81,10 +81,10 @@ namespace adonet
         }
         private async Task AddSales()
         {
-            DateTime start = new DateTime(2023, 3, 3);
+            DateTime start = new DateTime(2023, 3, 11);
 
             DateTime randomDate = start
-                .AddDays(1)
+                .AddDays(0)
                 .AddHours(App.Random.Next(9, 20))
                 .AddMinutes(App.Random.Next(0, 59))
                 .AddSeconds(App.Random.Next(0, 59));
@@ -105,7 +105,7 @@ namespace adonet
 
         private void ProductSalesButton_Click(object sender, RoutedEventArgs e)
         {
-            DateTime date = new(2023, 04, 21);
+            DateTime date = new(2023, 03, 11);
             var query = App.EfDataContext.Products
                 .GroupJoin(
                     App.EfDataContext.Sales,
@@ -298,7 +298,7 @@ namespace adonet
 
         private void SalesProdButton_Click(object sender, RoutedEventArgs e)
         {
-            DateTime date = new(2023, 04, 21);
+            DateTime date = new(2023, 03, 11);
             ResultLabel.Content = "";
             foreach (Product p in
             App.EfDataContext

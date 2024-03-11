@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace adonet.EFCrudViews
 {
     /// <summary>
-    /// Interaction logic for EfManagerCrudWindow.xaml
+    /// Interaction logic for EfSaleCrudWindow.xaml
     /// </summary>
-    public partial class EfManagerCrudWindow : Window
+    public partial class EfSaleCrudWindow : Window
     {
-        public ManagerModel model { get; init; }
+        public SaleModel model { get; init; }
         public CrudActions Action { get; private set; }
-        public EfManagerCrudWindow(ManagerModel model)
+        public EfSaleCrudWindow(SaleModel model)
         {
             InitializeComponent();
             this.model = model;
@@ -48,13 +48,34 @@ namespace adonet.EFCrudViews
             Close();
         }
 
+        private void ProductsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            model.Product = (IdName)ProductsComboBox.SelectedItem;
+        }
+
+        private void ManagersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            model.Manager = (IdName)ManagersComboBox.SelectedItem;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (model.MainDep != null)
+            if(model.Product!= null)
             {
-                MainDepComboBox.SelectedItem =
-                this.model.Departments.First(idName => idName.Id == model.MainDep.Id);
+                ProductsComboBox.SelectedItem =
+                    this.model.Products.First(idName => idName.Id == model.Product.Id);
             }
+            if(model.Manager!= null)
+            {
+                ManagersComboBox.SelectedItem =
+                    this.model.Managers.First(idName => idName.Id == model.Manager.Id);
+            }
+        }
+
+        /*private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainDepComboBox.SelectedItem =
+                this.model.Departments.First(idName => idName.Id == model.MainDep.Id);
             if (model.SecDep != null)
             {
                 SecDepComboBox.SelectedItem =
@@ -62,7 +83,7 @@ namespace adonet.EFCrudViews
             }
             if (model.Chief != null)
             {
-                ChiefComboBox.SelectedItem=model.Chiefs.First(m=>m.Id==model.Chief.Id);
+                ChiefComboBox.SelectedItem = model.Chiefs.First(m => m.Id == model.Chief.Id);
             }
         }
 
@@ -73,7 +94,7 @@ namespace adonet.EFCrudViews
 
         private void ClearChief_Click(object sender, RoutedEventArgs e)
         {
-            SecDepComboBox.SelectedIndex= -1;
+            SecDepComboBox.SelectedIndex = -1;
         }
 
         private void ChiefComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,17 +104,12 @@ namespace adonet.EFCrudViews
 
         private void SecDepComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            model.SecDep=SecDepComboBox.SelectedItem as IdName;
+            model.SecDep = SecDepComboBox.SelectedItem as IdName;
         }
 
         private void MainDepComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             model.MainDep = (IdName)MainDepComboBox.SelectedItem;
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
+        }*/
     }
 }

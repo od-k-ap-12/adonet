@@ -22,7 +22,7 @@ namespace adonet.Models
             Surname = entity.Surname;
             Name = entity.Name;
             Secname = entity.Secname;
-            MainDep = new IdName 
+            MainDep = entity.IdMainDep == default ? null! : new IdName 
             {
                 Id = entity.MainDepartment.Id, 
                 Name = entity.MainDepartment.Name 
