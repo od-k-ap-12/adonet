@@ -81,7 +81,7 @@ namespace adonet
         }
         private async Task AddSales()
         {
-            DateTime start = new DateTime(2023, 3, 11);
+            DateTime start = new DateTime(2023, 3, 12);
 
             DateTime randomDate = start
                 .AddDays(0)
@@ -105,7 +105,7 @@ namespace adonet
 
         private void ProductSalesButton_Click(object sender, RoutedEventArgs e)
         {
-            DateTime date = new(2023, 03, 11);
+            DateTime date = new(2023, 03, 12);
             var query = App.EfDataContext.Products
                 .GroupJoin(
                     App.EfDataContext.Sales,

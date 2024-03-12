@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:adonet"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="350">
+        Title="MainWindow" Height="550" Width="350">
     <StackPanel Orientation="Vertical">
         <Label Content="Технологія ADO" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Center"/>
         <Button x:Name="IntroButton" Content="Вступ. Налаштування" FontSize="18" FontWeight="DemiBold" Margin="10 20 10 20" Padding="5" Click="IntroButton_Click"/>
@@ -13,6 +13,7 @@
         <Button x:Name="CrudButton" Content="CRUD" FontSize="18" FontWeight="DemiBold" Margin="10 20 10 20" Padding="5" Click="CrudButton_Click"/>
         <Button x:Name="EfButton" Content="Entity Framework" FontSize="18" FontWeight="DemiBold" Margin="10 20 10 20" Padding="5" Click="EfButton_Click"/>
         <Button x:Name="EfCrudButton" Content="Entity Framework CRUD" FontSize="18" FontWeight="DemiBold" Margin="10 20 10 20" Padding="5" Click="EfCrudButton_Click"/>
+        <Button x:Name="PracticeButton" Content="Practice" FontSize="18" FontWeight="DemiBold" Margin="10 20 10 20" Padding="5" Click="PracticeButton_Click"/>
 
     </StackPanel>
 </Window>

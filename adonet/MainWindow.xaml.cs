@@ -58,6 +58,13 @@ namespace adonet
             new EfCrudWindow().ShowDialog();
             this.Show();
         }
+
+        private void PracticeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            new PracticeWindow().ShowDialog();
+            this.Show();
+        }
     }
 }
 /*
